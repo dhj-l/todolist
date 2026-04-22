@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import type { Task } from '@/utils/helpers'
-import { getPriorityColor, getCategoryColor, getPriorityText } from '@/utils/helpers'
+import { getCategoryColor, getPriorityText } from '@/utils/helpers'
 import {
-  CheckOutlined,
   CalendarOutlined,
   TagOutlined,
   EditOutlined,
   DeleteOutlined,
 } from '@ant-design/icons-vue'
+import { Checkbox, Tag } from 'ant-design-vue'
 
 defineProps<{
   task: Task
@@ -27,16 +27,7 @@ const emit = defineEmits<{
   >
     <div class="flex items-start gap-4">
       <div class="shrink-0 mt-1" @click="emit('toggle', task.id)">
-        <div
-          class="w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-300"
-          :class="
-            task.completed
-              ? 'bg-green-500 border-green-500'
-              : 'border-gray-300 hover:border-indigo-400'
-          "
-        >
-          <CheckOutlined v-if="task.completed" class="text-white text-sm" />
-        </div>
+        <Checkbox :checked="task.completed" />
       </div>
 
       <div
@@ -61,15 +52,8 @@ const emit = defineEmits<{
             </p>
           </div>
           <div class="flex items-center gap-2 shrink-0">
-            <span
-              class="px-3 py-1 rounded-full text-xs font-medium border"
-              :class="getPriorityColor(task.priority)"
-            >
-              {{ getPriorityText(task.priority) }}优先级
-            </span>
-            <span class="px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
-              {{ task.category }}
-            </span>
+            <Tag :bordered="false">{{ getPriorityText(task.priority) }}优先级</Tag>
+            <Tag :bordered="false" color="default">{{ task.category }}</Tag>
           </div>
         </div>
 
@@ -104,3 +88,32 @@ const emit = defineEmits<{
     </div>
   </div>
 </template>
+
+<style scoped>
+:deep(.ant-checkbox-wrapper) {
+  margin: 0;
+}
+:deep(.ant-checkbox-inner) {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid #d1d5db;
+}
+:deep(.ant-checkbox-checked .ant-checkbox-inner) {
+  background-color: #22c55e;
+  border-color: #22c55e;
+}
+:deep(.ant-checkbox-checked::after) {
+  border: none;
+}
+:deep(.ant-checkbox:hover .ant-checkbox-inner) {
+  border-color: #818cf8;
+}
+:deep(.ant-tag) {
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 2px 12px;
+  border: 1px solid;
+}
+</style>

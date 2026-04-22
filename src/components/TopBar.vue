@@ -1,37 +1,68 @@
 <script setup lang="ts">
-import { SearchOutlined, BellOutlined, DownOutlined } from '@ant-design/icons-vue'
+import { SearchOutlined, BellOutlined } from '@ant-design/icons-vue'
+import { Input, Dropdown, Badge, Avatar } from 'ant-design-vue'
+
+const userMenuItems = [
+  { key: 'profile', label: '个人中心' },
+  { key: 'settings', label: '设置' },
+  { key: 'divider', type: 'divider' as const },
+  { key: 'logout', label: '退出登录' },
+]
 </script>
 
 <template>
   <header
-    class="h-16 bg-white border-b border-[#ebeef5] flex items-center justify-between px-8 flex-shrink-0"
+    class="h-16 bg-white border-b border-[#ebeef5] flex items-center justify-between px-8 shrink-0"
   >
     <div class="flex items-center flex-1 max-w-sm">
-      <div class="relative w-full">
-        <SearchOutlined class="absolute left-3 top-1/2 -translate-y-1/2 text-[#b0b3c7] text-sm" />
-        <input
-          type="text"
-          placeholder="搜索任务..."
-          class="w-full pl-10 pr-4 py-2 bg-[#f8f9fc] border border-[#ebeef5] rounded-xl text-sm text-[#4a4a68] placeholder-[#b0b3c7] outline-none focus:border-[#4f6ef7] focus:bg-white transition-colors"
-        />
-      </div>
+      <Input placeholder="搜索任务..." class="w-full" size="middle">
+        <template #prefix>
+          <SearchOutlined class="text-[#b0b3c7]" />
+        </template>
+      </Input>
     </div>
 
     <div class="flex items-center gap-5">
-      <button class="relative text-[#8c8fa3] hover:text-[#4a4a68] transition-colors">
-        <BellOutlined class="text-lg" />
-        <span class="absolute -top-0.5 -right-0.5 w-2 h-2 bg-[#f56c6c] rounded-full" />
-      </button>
+      <Badge :count="1" :offset="[0, 4]">
+        <button class="text-[#8c8fa3] hover:text-[#4a4a68] transition-colors p-1">
+          <BellOutlined class="text-lg" />
+        </button>
+      </Badge>
 
-      <div class="flex items-center gap-2.5 cursor-pointer">
-        <div
-          class="w-8 h-8 bg-[#4f6ef7] rounded-full flex items-center justify-center text-white text-xs font-semibold"
-        >
-          A
+      <Dropdown :menu="{ items: userMenuItems }" placement="bottomRight">
+        <div class="flex items-center gap-2.5 cursor-pointer">
+          <Avatar size="small" style="background-color: #4f6ef7">A</Avatar>
+          <span class="text-sm font-medium text-[#1a1a2e]">Alex</span>
         </div>
-        <span class="text-sm font-medium text-[#1a1a2e]">Alex</span>
-        <DownOutlined class="text-xs text-[#b0b3c7]" />
-      </div>
+      </Dropdown>
     </div>
   </header>
 </template>
+
+<style scoped>
+:deep(.ant-input) {
+  border-radius: 12px;
+  background-color: #f8f9fc;
+  border-color: #ebeef5;
+  font-size: 14px;
+  color: #4a4a68;
+}
+:deep(.ant-input:focus),
+:deep(.ant-input-focused) {
+  background-color: #fff;
+  border-color: #4f6ef7;
+}
+:deep(.ant-input-prefix) {
+  margin-right: 8px;
+}
+:deep(.ant-input::placeholder) {
+  color: #b0b3c7;
+}
+:deep(.ant-badge-count) {
+  min-width: 8px;
+  height: 8px;
+  padding: 0;
+  font-size: 0;
+  background: #f56c6c;
+}
+</style>

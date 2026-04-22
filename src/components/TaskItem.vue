@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { CheckOutlined, StarOutlined, StarFilled, ReloadOutlined } from '@ant-design/icons-vue'
+import { Checkbox } from 'ant-design-vue'
+import { computed } from 'vue'
 
 interface TaskItemProps {
   title: string
@@ -18,7 +20,11 @@ const categoryColors: Record<string, string> = {
   健康: 'bg-amber-100 text-amber-600',
 }
 
-defineProps<TaskItemProps>()
+const props = defineProps<TaskItemProps>()
+
+const dateColor = computed(() => {
+  return props.completed ? 'text-[#d0d3dd]' : 'text-[#8c8fa3]'
+})
 </script>
 
 <template>
@@ -27,16 +33,7 @@ defineProps<TaskItemProps>()
     :class="{ 'opacity-50': completed }"
   >
     <label class="flex items-center gap-4 flex-1 min-w-0 cursor-pointer">
-      <span
-        class="w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 transition-all"
-        :class="
-          completed
-            ? 'bg-[#4f6ef7] border-[#4f6ef7]'
-            : 'border-[#d0d3dd] hover:border-[#4f6ef7] group-hover:border-[#4f6ef7]'
-        "
-      >
-        <CheckOutlined v-if="completed" class="text-white text-xs" />
-      </span>
+      <Checkbox :checked="completed" class="shrink-0" />
 
       <span
         class="text-sm font-medium truncate transition-all"
@@ -54,10 +51,7 @@ defineProps<TaskItemProps>()
     </label>
 
     <div class="flex items-center gap-4 shrink-0">
-      <span
-        class="text-xs font-medium whitespace-nowrap"
-        :class="completed ? 'text-[#d0d3dd]' : 'text-[#8c8fa3]'"
-      >
+      <span class="text-xs font-medium whitespace-nowrap" :class="dateColor">
         {{ date }}
         <template v-if="time">{{ time }}</template>
       </span>
@@ -79,3 +73,25 @@ defineProps<TaskItemProps>()
     </div>
   </div>
 </template>
+
+<style scoped>
+:deep(.ant-checkbox-wrapper) {
+  margin: 0;
+}
+:deep(.ant-checkbox-inner) {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 2px solid #d0d3dd;
+}
+:deep(.ant-checkbox-checked .ant-checkbox-inner) {
+  background-color: #4f6ef7;
+  border-color: #4f6ef7;
+}
+:deep(.ant-checkbox-checked::after) {
+  border: none;
+}
+:deep(.ant-checkbox:hover .ant-checkbox-inner) {
+  border-color: #4f6ef7;
+}
+</style>

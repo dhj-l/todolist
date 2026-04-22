@@ -8,8 +8,12 @@ import TaskView from '@/components/TaskView.vue'
   <div class="flex h-screen bg-[#f8f9fc]">
     <Sidebar />
     <div class="flex-1 flex flex-col min-w-0">
-      <TopBar />
-      <TaskView />
+      <header>
+        <TopBar />
+      </header>
+      <main class="flex-1">
+        <router-view />
+      </main>
     </div>
   </div>
 </template>

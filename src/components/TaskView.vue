@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import TaskItem from './TaskItem.vue'
+import TaskList from './TaskList.vue'
 import { FilterOutlined, SortAscendingOutlined, PlusOutlined } from '@ant-design/icons-vue'
+import { Button, Input } from 'ant-design-vue'
 
 interface Task {
   title: string
@@ -71,9 +72,6 @@ const tasks: Task[] = [
   },
   { title: '早睡 23:00 前', category: '健康', date: '5月30日', completed: true, isStarred: false },
 ]
-
-const totalCount = tasks.length
-const completedCount = tasks.filter((t) => t.completed).length
 </script>
 
 <template>
@@ -82,51 +80,47 @@ const completedCount = tasks.filter((t) => t.completed).length
       <div class="flex items-center justify-between mb-6">
         <h1 class="text-2xl font-bold text-[#1a1a2e]">全部任务</h1>
         <div class="flex items-center gap-6">
-          <button
-            class="flex items-center gap-2 text-sm text-[#4a4a68] hover:text-[#4f6ef7] transition-colors"
-          >
-            <FilterOutlined class="text-sm" />
+          <Button type="text" class="text-[#4a4a68]! hover:text-[#4f6ef7]! px-2!">
+            <template #icon>
+              <FilterOutlined class="text-sm" />
+            </template>
             筛选
-          </button>
-          <button
-            class="flex items-center gap-2 text-sm text-[#4a4a68] hover:text-[#4f6ef7] transition-colors"
-          >
-            <SortAscendingOutlined class="text-sm" />
+          </Button>
+          <Button type="text" class="text-[#4a4a68]! hover:text-[#4f6ef7]! px-2!">
+            <template #icon>
+              <SortAscendingOutlined class="text-sm" />
+            </template>
             排序
-          </button>
+          </Button>
         </div>
       </div>
 
       <div class="bg-white rounded-xl border border-[#ebeef5] shadow-sm mb-3">
-        <div class="flex items-center gap-3 px-5 py-3.5">
-          <PlusOutlined class="text-[#d0d3dd] text-base shrink-0" />
-          <input
-            type="text"
-            placeholder="添加新任务..."
-            class="flex-1 text-sm text-[#4a4a68] placeholder-[#b0b3c7] outline-none bg-transparent"
-          />
-        </div>
+        <Input placeholder="添加新任务..." class="border-none! shadow-none!" size="large">
+          <template #prefix>
+            <PlusOutlined class="text-[#d0d3dd]" />
+          </template>
+        </Input>
       </div>
 
-      <div class="bg-white rounded-xl border border-[#ebeef5] shadow-sm overflow-hidden">
-        <TaskItem
-          v-for="(task, index) in tasks"
-          :key="index"
-          :title="task.title"
-          :category="task.category"
-          :date="task.date"
-          :time="task.time"
-          :completed="task.completed"
-          :is-starred="task.isStarred"
-          :is-recurring="task.isRecurring"
-        />
-      </div>
-
-      <div class="text-center py-4">
-        <p class="text-xs text-[#b0b3c7]">
-          共 {{ totalCount }} 个任务，已完成 {{ completedCount }} 个
-        </p>
-      </div>
+      <TaskList :tasks="tasks" />
     </div>
   </main>
 </template>
+
+<style scoped>
+:deep(.ant-input) {
+  border-radius: 0;
+  font-size: 14px;
+  color: #4a4a68;
+}
+:deep(.ant-input::placeholder) {
+  color: #b0b3c7;
+}
+:deep(.ant-input-prefix) {
+  margin-right: 12px;
+}
+:deep(.ant-btn-text:hover) {
+  background-color: transparent !important;
+}
+</style>

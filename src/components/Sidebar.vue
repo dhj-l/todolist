@@ -10,12 +10,14 @@ import {
   PlusOutlined,
   SettingOutlined,
 } from '@ant-design/icons-vue'
+import { ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 interface NavItem {
   icon: any
   label: string
   count: number
-  active?: boolean
+  path?: string
 }
 
 interface ListCategory {
@@ -24,13 +26,24 @@ interface ListCategory {
   count: number
 }
 
+const route = useRoute()
+const router = useRouter()
+const currentPath = ref(route.path)
+
+watch(
+  () => route.path,
+  (newPath) => {
+    currentPath.value = newPath
+  },
+)
+
 const mainNavItems: NavItem[] = [
-  { icon: UnorderedListOutlined, label: '全部任务', count: 12, active: true },
-  { icon: CalendarOutlined, label: '今天', count: 5 },
-  { icon: StarOutlined, label: '重要', count: 3 },
-  { icon: PlayCircleOutlined, label: '进行中', count: 4 },
-  { icon: CheckSquareOutlined, label: '已完成', count: 8 },
-  { icon: CiOutlined, label: '已归档', count: 2 },
+  { icon: UnorderedListOutlined, label: '全部任务', count: 12, path: '/all' },
+  { icon: CalendarOutlined, label: '今天', count: 5, path: '/today' },
+  { icon: StarOutlined, label: '重要', count: 3, path: '/important' },
+  { icon: PlayCircleOutlined, label: '进行中', count: 4, path: '/ongoing' },
+  { icon: CheckSquareOutlined, label: '已完成', count: 8, path: '/completed' },
+  { icon: CiOutlined, label: '已归档', count: 2, path: '/archived' },
 ]
 
 const categories: ListCategory[] = [
@@ -39,6 +52,10 @@ const categories: ListCategory[] = [
   { color: 'bg-purple-500', label: '生活', count: 2 },
   { color: 'bg-amber-500', label: '健康', count: 1 },
 ]
+
+const handleChangePath = (path: string) => {
+  router.push(path)
+}
 </script>
 
 <template>
@@ -62,19 +79,26 @@ const categories: ListCategory[] = [
           :key="item.label"
           href="#"
           class="flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors"
-          :class="item.active ? 'bg-[#4f6ef7] text-white' : 'text-[#4a4a68] hover:bg-[#eef0f7]'"
+          :class="
+            item.path === currentPath
+              ? 'bg-[#4f6ef7] text-white'
+              : 'text-[#4a4a68] hover:bg-[#eef0f7]'
+          "
+          @click="handleChangePath(item.path!)"
         >
           <div class="flex items-center gap-3">
             <component
               :is="item.icon"
-              :class="item.active ? 'text-white' : 'text-[#8c8fa3]'"
+              :class="item.path === currentPath ? 'text-white' : 'text-[#8c8fa3]'"
               class="text-sm"
             />
             <span>{{ item.label }}</span>
           </div>
-          <span class="text-xs" :class="item.active ? 'text-white/80' : 'text-[#b0b3c7]'">{{
-            item.count
-          }}</span>
+          <span
+            class="text-xs"
+            :class="item.path === currentPath ? 'text-white/80' : 'text-[#b0b3c7]'"
+            >{{ item.count }}</span
+          >
         </a>
       </nav>
 
