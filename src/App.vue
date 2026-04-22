@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import TodoContainer from '@/components/TodoContainer.vue'
+import AppLayout from '@/layout/AppLayout.vue'
 </script>
 
 <template>
-  <TodoContainer />
+  <div>
+    <router-view />
+  </div>
 </template>

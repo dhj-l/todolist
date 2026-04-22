@@ -1,18 +1,33 @@
 <script setup lang="ts">
+import { PlusOutlined } from '@ant-design/icons-vue'
+import { FloatButton } from 'ant-design-vue'
+import { h } from 'vue'
+
 const emit = defineEmits<{
   click: []
 }>()
 </script>
 
 <template>
-  <div class="fixed bottom-8 right-8">
-    <button 
-      class="group flex items-center justify-center w-16 h-16 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-full shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300"
-      @click="emit('click')"
-    >
-      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-      </svg>
-    </button>
-  </div>
+  <FloatButton
+    :icon="h(PlusOutlined)"
+    shape="circle"
+    :style="{ right: '32px', bottom: '32px', width: '64px', height: '64px' }"
+    @click="emit('click')"
+  />
 </template>
+
+<style scoped>
+:deep(.ant-float-btn) {
+  background: linear-gradient(to right, #6366f1, #a855f7) !important;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1) !important;
+}
+:deep(.ant-float-btn:hover) {
+  transform: scale(1.1) !important;
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1) !important;
+  transition: all 0.3s !important;
+}
+:deep(.ant-float-btn .ant-float-btn-icon) {
+  font-size: 30px !important;
+}
+</style>

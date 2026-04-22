@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import type { Task } from '@/utils/helpers'
-import { getPriorityColor, getCategoryColor, getPriorityText } from '@/utils/helpers'
+import { getCategoryColor, getPriorityText } from '@/utils/helpers'
+import {
+  CalendarOutlined,
+  TagOutlined,
+  EditOutlined,
+  DeleteOutlined,
+} from '@ant-design/icons-vue'
+import { Checkbox, Tag } from 'ant-design-vue'
 
 defineProps<{
   task: Task
@@ -20,29 +27,7 @@ const emit = defineEmits<{
   >
     <div class="flex items-start gap-4">
       <div class="shrink-0 mt-1" @click="emit('toggle', task.id)">
-        <div
-          class="w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-300"
-          :class="
-            task.completed
-              ? 'bg-green-500 border-green-500'
-              : 'border-gray-300 hover:border-indigo-400'
-          "
-        >
-          <svg
-            v-if="task.completed"
-            class="w-4 h-4 text-white"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="3"
-              d="M5 13l4 4L19 7"
-            ></path>
-          </svg>
-        </div>
+        <Checkbox :checked="task.completed" />
       </div>
 
       <div
@@ -67,39 +52,18 @@ const emit = defineEmits<{
             </p>
           </div>
           <div class="flex items-center gap-2 shrink-0">
-            <span
-              class="px-3 py-1 rounded-full text-xs font-medium border"
-              :class="getPriorityColor(task.priority)"
-            >
-              {{ getPriorityText(task.priority) }}优先级
-            </span>
-            <span class="px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
-              {{ task.category }}
-            </span>
+            <Tag :bordered="false">{{ getPriorityText(task.priority) }}优先级</Tag>
+            <Tag :bordered="false" color="default">{{ task.category }}</Tag>
           </div>
         </div>
 
         <div class="flex items-center gap-4 text-sm text-gray-500">
           <div class="flex items-center gap-1.5">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-              ></path>
-            </svg>
+            <CalendarOutlined class="text-base" />
             <span>截止日期：{{ task.dueDate }}</span>
           </div>
           <div class="flex items-center gap-1.5">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
-              ></path>
-            </svg>
+            <TagOutlined class="text-base" />
             <span>{{ task.category }}</span>
           </div>
         </div>
@@ -112,29 +76,44 @@ const emit = defineEmits<{
           class="p-2 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
           @click.stop="emit('edit', task.id)"
         >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-            ></path>
-          </svg>
+          <EditOutlined class="text-base" />
         </button>
         <button
           class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
           @click.stop="emit('delete', task.id)"
         >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-            ></path>
-          </svg>
+          <DeleteOutlined class="text-base" />
         </button>
       </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+:deep(.ant-checkbox-wrapper) {
+  margin: 0;
+}
+:deep(.ant-checkbox-inner) {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid #d1d5db;
+}
+:deep(.ant-checkbox-checked .ant-checkbox-inner) {
+  background-color: #22c55e;
+  border-color: #22c55e;
+}
+:deep(.ant-checkbox-checked::after) {
+  border: none;
+}
+:deep(.ant-checkbox:hover .ant-checkbox-inner) {
+  border-color: #818cf8;
+}
+:deep(.ant-tag) {
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 2px 12px;
+  border: 1px solid;
+}
+</style>
