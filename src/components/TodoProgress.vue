@@ -14,8 +14,8 @@ defineProps<{
       <span class="text-sm font-bold text-indigo-600">{{ calculateProgress(tasks) }}%</span>
     </div>
     <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-      <div 
-        class="bg-gradient-to-r from-indigo-500 to-purple-500 h-3 rounded-full transition-all duration-500 ease-out"
+      <div
+        class="bg-linear-to-r from-indigo-500 to-purple-500 h-3 rounded-full transition-all duration-500 ease-out"
         :style="{ width: `${calculateProgress(tasks)}%` }"
       ></div>
     </div>
